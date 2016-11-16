@@ -1,9 +1,6 @@
 import RPi.GPIO as GPIO
 import time
 
-sensorSleep = 0.15       #change this for faster or slower output.
-sensorSleep2 = 0
-
 #starting the GPIO and setting warnings to false
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -15,22 +12,36 @@ DELTA = 17     #sensor 2
 BRAVO = 27
 
 #intializing/ setting up the sensors
-print("Sensor 1 Online")
 GPIO.setup(TRIG,GPIO.OUT)
 GPIO.setup(ECHO,GPIO.IN)
-time.sleep(0.1) # failsafe
-print("Sensor 2 Online")
+print "Sensor 1 Online"
 GPIO.setup(DELTA,GPIO.OUT)
 GPIO.setup(BRAVO,GPIO.IN)
+print "Sensor 2 Online"
+print ""
 
+#variables
+sensorSleep = 0.15       #change this for faster or slower output.
+sensorSleep2 = 0.0001    #largely ignore this
+sleep3 = 5               #for button pausing
+sOneArray = []           #array for sensor 1
+sTwoArray = []           #array for sensor 2
+counterOne = 0           #counter for loop in sensor 1
+counterTwo = 0           #counter for loop in sensor 2
+#  ++counterOne     <--  correct formatting
 
 #the actual program
-time.sleep(1) #this is for readabilities sake... Remove later on.
-while True: #while True means infinite loop (unless you set a False.
+print "Starting the While Loop" 
+print " "      
+while True:                 #infnite loop
 
+#    if 
+       # time.sleep(sleep3)
+    
     #Sensor 1
-    GPIO.output(TRIG, False)
     time.sleep(sensorSleep)
+    GPIO.output(TRIG, False)
+    time.sleep(sensorSleep2)
     GPIO.output(TRIG,True)
     time.sleep(sensorSleep2)
     GPIO.output(TRIG,False)
@@ -49,13 +60,15 @@ while True: #while True means infinite loop (unless you set a False.
     
     #printing the distance of sensor 1
     if distance>2 and distance<400:
-        print ('1:',distance)
+        print '1:',distance
     else:
-        print ("Error 1")
+        print "Out of Range - 1"
+        
 
     #Sensor 2
-    GPIO.output(DELTA, False)
     time.sleep(sensorSleep)
+    GPIO.output(DELTA, False)
+    time.sleep(sensorSleep2)
     GPIO.output(DELTA,True)
     time.sleep(sensorSleep2)
     GPIO.output(DELTA,False)
@@ -75,8 +88,8 @@ while True: #while True means infinite loop (unless you set a False.
     
     #printing the distance of sensor 2
     if distanceT>2 and distanceT<400:
-        print("2:",distanceT)
-        print(' ')
+        print "2:",distanceT
+        print ' '
     else:
-        print("Error 2")
-        print(' ')
+        print "Out of Range - 2" 
+        print ' '
