@@ -6,13 +6,13 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 # Sensors being set to GPIO
-TRIG = 23  # sensor 1
-ECHO = 24
-DELTA = 17  # sensor 2
-BRAVO = 27
+TRIG = 23   # sensor 1 output
+ECHO = 24   # sensor 1 input
+DELTA = 17  # sensor 2 output
+BRAVO = 27  # sensor 2 input
 
 # initializing/ setting up the sensors
-GPIO.setup(TRIG, GPIO.OUT)
+GPIO.setup(TRIG, GPIO.OUT)      
 GPIO.setup(ECHO, GPIO.IN)
 print "Sensor 1 Online"
 GPIO.setup(DELTA, GPIO.OUT)
@@ -20,14 +20,14 @@ GPIO.setup(BRAVO, GPIO.IN)
 print "Sensor 2 Online"
 print ""
 
-# variables
-sensorSleep = 0.15  # change this for faster or slower output.
-sensorSleep2 = 0.0001  # largely ignore this
-sleep3 = 5  # for button pausing
-sOneArray = []  # array for sensor 1
-sTwoArray = []  # array for sensor 2
-counterOne = 0  # counter for loop in sensor 1
-counterTwo = 0  # counter for loop in sensor 2
+# defining variables
+sensorSleep = 0.15      # change this for faster or slower output.
+sensorSleep2 = 0.0001   # largely ignore this
+sleep3 = 5              # for button pausing
+arrayOne = []           # array for sensor 1
+arrayTwo = []           # array for sensor 2
+counterOne = 0          # counter for loop in sensor 1
+counterTwo = 0          # counter for loop in sensor 2
 #  ++counterOne     <--  correct formatting
 
 # the actual program
@@ -47,20 +47,20 @@ while True:  # infinite loop
     GPIO.output(TRIG, False)
 
     while GPIO.input(ECHO) == 0:
-        pulse_start = time.time()
+        pulseStartOne = time.time()
 
     while GPIO.input(ECHO) == 1:
-        pulse_end = time.time()
+        pulseEndOne = time.time()
 
     # defining distance
-    pulse_duration = pulse_end - pulse_start
-    distance = pulse_duration * 17150
-    distance = round(distance, 2)
+    pulseDurationOne = pulseEndOne - pulseStartOne
+    distanceOne = pulseDurationOne * 17150
+    distanceOne = round(distanceOne, 2)
     # distane = (distance - 0.5) --- Remove this later?
 
     # printing the distance of sensor 1
-    if 2 < distance < 400:
-        print '1:', distance
+    if 2 < distanceOne < 400:
+        print '1:', distanceOne
     else:
         print "Out of Range - 1"
 
@@ -73,20 +73,20 @@ while True:  # infinite loop
     GPIO.output(DELTA, False)
 
     while GPIO.input(BRAVO) == 0:
-        pulse_startT = time.time()
+        pulseStartTwo = time.time()
 
     while GPIO.input(BRAVO) == 1:
-        pulse_endT = time.time()
+        pulseEndTwo = time.time()
 
     # defining distance
-    pulse_durationT = pulse_endT - pulse_startT
-    distanceT = pulse_durationT * 17150
-    distanceT = round(distanceT, 2)
+    pulseDurationTwo = pulseEndTwo - pulseStartTwo
+    distanceTwo = pulseDurationTwo * 17150
+    distanceTwo = round(distanceTwo, 2)
     # distaneT = (distanceT - 0.5) --- Remove this later?
 
     # printing the distance of sensor 2
-    if 2 < distanceT < 400:
-        print "2:", distanceT
+    if 2 < distanceTwo < 400:
+        print "2:", distanceTwo
         print ' '
     else:
         print "Out of Range - 2"
