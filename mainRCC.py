@@ -11,7 +11,7 @@ ECHO = 24   # sensor 1 input  - connected to echo pin
 DELTA = 17  # sensor 2 output - connected to trig pin
 BRAVO = 27  # sensor 2 input  - connected to echo pin
 
-# initializing/ setting up the sensors
+# initializing/ setting up the sensors 
 GPIO.setup(TRIG, GPIO.OUT)      
 GPIO.setup(ECHO, GPIO.IN)
 print "Sensor 1 Online"
@@ -20,20 +20,24 @@ GPIO.setup(BRAVO, GPIO.IN)
 print "Sensor 2 Online"
 print ""
 
+# don't edit anything above this comment
+
 # defining variables
 sensorSleep = 0.2       # change this for faster or slower output.
 sensorSleep2 = 0.0001   # necessary buffer time
 arrayOne = []           # array for sensor 1
 arrayTwo = []           # array for sensor 2
-#  ++counterOne    <--  correct formatting
+counterOne = 0          # counter for loop in sensor 1
+counterTwo = 0          # counter for loop in sensor 2
 
 # the actual program
 print "Starting the While Loop"
 print " "
 while True:  # infinite loop
 
-    counterOne = 0          # counter for loop in sensor 1
-    counterTwo = 0          # counter for loop in sensor 2
+    # basically kills he program after 100 iterations 
+    if counterOne == 100:
+        time.sleep(10000)
     
     # Sensor 1
     time.sleep(sensorSleep)
@@ -53,14 +57,11 @@ while True:  # infinite loop
     pulseDurationOne = pulseEndOne - pulseStartOne
     distanceOne = pulseDurationOne * 17150
     distanceOne = round(distanceOne, 2)
-    # distane = (distance - 0.5) --- Remove this later?
-    
 
     # printing the distance of sensor 1
     if 2 < distanceOne < 400:
+        counterOne = counterOne + 1
         print '1)', distanceOne
-        ++counterOne
-        print counterOne
     else:
         print "Out of Range - 1"
 
@@ -82,10 +83,10 @@ while True:  # infinite loop
     pulseDurationTwo = pulseEndTwo - pulseStartTwo
     distanceTwo = pulseDurationTwo * 17150
     distanceTwo = round(distanceTwo, 2)
-    # distaneT = (distanceT - 0.5) --- Remove this later?
 
     # printing the distance of sensor 2
     if 2 < distanceTwo < 400:
+        counterTwo = counterTwo + 1
         print "2)", distanceTwo
         print ' '
     else:
