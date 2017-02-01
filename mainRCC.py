@@ -24,7 +24,7 @@ print ""
 
 # defining variables
 sensorSleep = 0.2       # change this for faster or slower output.
-sensorSleep2 = 0.0001   # necessary buffer time
+sensorSleep2 = 0.0001   # necessary buffer time - don't change this
 arrayOne = []           # array for sensor 1
 arrayTwo = []           # array for sensor 2
 counterOne = 0          # counter for loop in sensor 1
@@ -35,11 +35,14 @@ print "Starting the While Loop"
 print " "
 while True:  # infinite loop
 
-    # basically kills he program after 100 iterations 
-    if counterOne == 100:
-        time.sleep(10000)
+    # kills the loop after 100 iterations (change this later for testing purposes at the moment)
+    if counterTwo == 100:
+        break
     
+    # ==============================================================================
     # Sensor 1
+    # ==============================================================================
+    
     time.sleep(sensorSleep)
     GPIO.output(TRIG, False)
     time.sleep(sensorSleep2)
@@ -59,13 +62,17 @@ while True:  # infinite loop
     distanceOne = round(distanceOne, 2)
 
     # printing the distance of sensor 1
-    if 2 < distanceOne < 400:
+    if 1 < distanceOne < 10000:
         counterOne = counterOne + 1
         print '1)', distanceOne
+        arrayOne.append(distanceOne) # adding each iteration to arrayOne
     else:
         print "Out of Range - 1"
 
+    # =============================================================================
     # Sensor 2
+    # =============================================================================
+    
     time.sleep(sensorSleep)
     GPIO.output(DELTA, False)
     time.sleep(sensorSleep2)
@@ -85,10 +92,21 @@ while True:  # infinite loop
     distanceTwo = round(distanceTwo, 2)
 
     # printing the distance of sensor 2
-    if 2 < distanceTwo < 400:
+    if 1 < distanceTwo < 10000:
         counterTwo = counterTwo + 1
         print "2)", distanceTwo
         print ' '
+        arrayTwo.append(distanceTwo) # adding each iteration to arrayTwo
     else:
         print "Out of Range - 2"
-        print
+        print ' '
+
+sumOne = sum(arrayOne)
+averageOne = sumOne/100
+print 'Sensor One Average:'
+print averageOne
+
+sumTwo = sum(arrayTwo)
+averageTwo = sumTwo/100
+print 'Sensor Two Average:'
+print averageTwo
