@@ -6,10 +6,10 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 # Sensors being set to GPIO
-TRIG = 23   # sensor 1 output - connected to trig pin
-ECHO = 24   # sensor 1 input  - connected to echo pin
-DELTA = 17  # sensor 2 output - connected to trig pin
-BRAVO = 27  # sensor 2 input  - connected to echo pin
+TRIG = 23   # sensor 1 output - connected to trig pin - don't change this
+ECHO = 24   # sensor 1 input  - connected to echo pin - don't change this
+DELTA = 17  # sensor 2 output - connected to trig pin - don't change this
+BRAVO = 27  # sensor 2 input  - connected to echo pin - don't change this
 
 # initializing/ setting up the sensors 
 GPIO.setup(TRIG, GPIO.OUT)      
@@ -21,13 +21,12 @@ print "Sensor 2 Online"
 print ""
 
 # defining variables
-sensorSleep = 0.1       # change this for faster or slower output.
-sensorSleep2 = 0.0001   # necessary buffer time - don't change this
-arrayOne = []           # array for sensor 1
-arrayTwo = []           # array for sensor 2
-counterOne = 0          # counter for loop in sensor 1
-counterTwo = 0          # counter for loop in sensor 2
-arraySize = 10          # the number of items to be averaged
+sensorSleep = 0.05      # change this for faster or slower output.
+sensorSleep2 = 0.001    # necessary buffer time - don't change this
+arrayOne = []           # array for sensor 1 - don't change this
+arrayTwo = []           # array for sensor 2- don't change this
+counter = 0             # counter for loop 1
+arraySize = 100         # the number of items to be averaged - the larger the more accurate.
 
 # ====================================
 #       loop to calculate average
@@ -38,12 +37,12 @@ print " "
 while True:  
 
     # breaks the while loop after it reaches the integer in variable arraySize
-    if counterTwo == arraySize:
+    if counter == arraySize:
         break
     
-    # ==============================================================================
-    #           Sensor 1
-    # ==============================================================================
+    # ==========================
+    #          Sensor 1
+    # ==========================
     
     time.sleep(sensorSleep)
     GPIO.output(TRIG, False)
@@ -61,16 +60,14 @@ while True:
     # defining distance
     pulseDurationOne = pulseEndOne - pulseStartOne
     distanceOne = pulseDurationOne * 17150
-    distanceOne = round(distanceOne, 2)
 
     # calculating distance for sensor 1
     if True:
-        counterOne += 1
         arrayOne.append(distanceOne) # adding each iteration to arrayOne
 
-    # =============================================================================
+    # =============================
     #           Sensor 2
-    # =============================================================================
+    # =============================
     
     time.sleep(sensorSleep)
     GPIO.output(DELTA, False)
@@ -88,40 +85,48 @@ while True:
     # defining distance
     pulseDurationTwo = pulseEndTwo - pulseStartTwo
     distanceTwo = pulseDurationTwo * 17150
-    distanceTwo = round(distanceTwo, 2)
 
     # calculating distance for sensor 2
     if True:
-        counterTwo += 1
         arrayTwo.append(distanceTwo) # adding each iteration to arrayTwo
+        counter += 1
 
 # =========================================
 #       end of loop to compute average
 # =========================================
 
+# averageOne is distance to the floor for sensor 1
 sumOne = sum(arrayOne)
-averageOne = sumOne/arraySize
+averageOne = sumOne/arraySize       
 
+# averageTwo is distance to the floor for sensor 2
 sumTwo = sum(arrayTwo)
 averageTwo = sumTwo/arraySize
 
-percentageAverageOne = averageOne / 10 * 4      # 40% of the average
-percentageAverageTwo = averageTwo / 10 * 4      # 40% of the average
+percentageAverageOne = round((averageOne / 10) * 6, 2)      # 60% of the average rounded to two decimals
+percentageAverageTwo = round((averageTwo / 10) * 6, 2)      # 60% of the average rounded to two decimals
 
 print str(percentageAverageOne)
 print str(percentageAverageTwo)
 print ''
 
+# ======================================================
+#                       main loop
+# ======================================================
 
-# ===================
-#    True loop  
-# ===================
+time.sleep(2) # for readability purposes
 
 while True:
-    
-    # ==============================================================================
+
+    if distanceOne < percentageAverageOne:      # for sensor 1: if the distance is smaller than the average
+        print 'distance 1 is smaller'
+
+    if distanceTwo < percentageAverageTwo:      # for sensor 2: if the distance is smaller than the average
+        print 'distance 2 is smaller' 
+
+    # ==============================
     #           Sensor 1
-    # ==============================================================================
+    # ==============================
     
     time.sleep(sensorSleep)
     GPIO.output(TRIG, False)
@@ -136,20 +141,16 @@ while True:
     while GPIO.input(ECHO) == 1:
         pulseEndOne = time.time()
 
-    # defining distance
     pulseDurationOne = pulseEndOne - pulseStartOne
     distanceOne = pulseDurationOne * 17150
     distanceOne = round(distanceOne, 2)
 
-    # printing the distance of sensor 1
-
     if True:
-        counterOne += 1
         print '1)', distanceOne
 
-    # =============================================================================
+    # =============================
     #           Sensor 2
-    # =============================================================================
+    # =============================
     
     time.sleep(sensorSleep)
     GPIO.output(DELTA, False)
@@ -164,13 +165,10 @@ while True:
     while GPIO.input(BRAVO) == 1:
         pulseEndTwo = time.time()
 
-    # defining distance
     pulseDurationTwo = pulseEndTwo - pulseStartTwo
     distanceTwo = pulseDurationTwo * 17150
     distanceTwo = round(distanceTwo, 2)
 
-    # printing the distance of sensor 2
     if True:
-        counterTwo += 1
         print '2)', distanceTwo
         print ''
