@@ -21,12 +21,16 @@ print "Sensor 2 Online"
 print ""
 
 # defining variables
-sensorSleep = 0.05      # change this for faster or slower output.
-sensorSleep2 = 0.001    # necessary buffer time - don't change this
+sensorSleep = 0.1       # change this for faster or slower output.
+sensorSleep2 = 0.001    # necessary buffer time - don't change this 
 arrayOne = []           # array for sensor 1 - don't change this
 arrayTwo = []           # array for sensor 2- don't change this
 counter = 0             # counter for loop 1
-arraySize = 100         # the number of items to be averaged - the larger the more accurate.
+arraySize = 50          # the number of items to be averaged - the larger the more accurate.
+detArrayOne = []        # array for detecting movement - sensor one 
+detArrayTwo = []        # array for detecting movement - sensor two
+valueOne = 1            # value for easy sizing of array - don't change
+detSize = 3             # number of times it needs to be detected in a row
 
 # ====================================
 #       loop to calculate average
@@ -119,11 +123,26 @@ time.sleep(2) # for readability purposes
 while True:
 
     if distanceOne < percentageAverageOne:      # for sensor 1: if the distance is smaller than the average
+        detArrayOne.append(valueOne)
         print 'distance 1 is smaller'
 
     if distanceTwo < percentageAverageTwo:      # for sensor 2: if the distance is smaller than the average
-        print 'distance 2 is smaller' 
+        detArrayTwo.append(valueOne)
+        print 'distance 2 is smaller'
 
+    if distanceOne > percentageAverageOne:      # wipes the array if it isnt above the average - sensor one
+        detArrayOne = []
+
+    if distanceTwo > percentageAverageTwo:      # wipes the array if it isnt above the average - sensor two
+        detArrayTwo = []
+
+    if sum(detArrayOne) >= detSize:
+        print 'detected - sensor 1'
+
+    if sum(detArrayTwo) >= detSize:
+        print 'detected - sensor 2'
+
+    
     # ==============================
     #           Sensor 1
     # ==============================
