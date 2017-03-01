@@ -31,6 +31,9 @@ detArrayOne = []        # array for detecting movement - sensor one
 detArrayTwo = []        # array for detecting movement - sensor two
 valueOne = 1            # value for easy sizing of array - don't change
 detSize = 3             # number of times it needs to be detected in a row
+sensorOneDet = 0        # initializing sensor one placeholder 
+sensorTwoDet = 0        # initializing sensor two placeholder
+roomCapacity = 0        # the actual room capacity
 
 # ====================================
 #       loop to calculate average
@@ -122,25 +125,29 @@ time.sleep(2) # for readability purposes
 
 while True:
 
-    if distanceOne < percentageAverageOne:      # for sensor 1: if the distance is smaller than the average
-        detArrayOne.append(valueOne)
-        print 'distance 1 is smaller'
+    if distanceOne < percentageAverageOne:      
+        detArrayOne.append(valueOne)            # for sensor 1: if the distance is smaller than the average
 
-    if distanceTwo < percentageAverageTwo:      # for sensor 2: if the distance is smaller than the average
-        detArrayTwo.append(valueOne)
-        print 'distance 2 is smaller'
+    if distanceTwo < percentageAverageTwo:      
+        detArrayTwo.append(valueOne)            # for sensor 2: if the distance is smaller than the average
 
-    if distanceOne > percentageAverageOne:      # wipes the array if it isnt above the average - sensor one
-        detArrayOne = []
+    if distanceOne > percentageAverageOne:      
+        detArrayOne = []                        # reintializes the array to be empty when something isn't detected
+        sensorOneDet = 0                        # sensor one set to 0 as long as nothing is detected 
 
-    if distanceTwo > percentageAverageTwo:      # wipes the array if it isnt above the average - sensor two
-        detArrayTwo = []
+    if distanceTwo > percentageAverageTwo:      
+        detArrayTwo = []                        # reintializes the array to be empty when something isn't detected
+        sensorTwoDet = 0                        # sensor two set to 0 as long as nothing is detected 
 
     if sum(detArrayOne) >= detSize:
+        sensorOneDet = 1                        # sensor one set to 1 as long as something is under it
         print 'detected - sensor 1'
+        print ''
 
     if sum(detArrayTwo) >= detSize:
+        sensorTwoDet = 1                        # sensor two set to 1 as long as something is under it
         print 'detected - sensor 2'
+        print '' 
 
     
     # ==============================
