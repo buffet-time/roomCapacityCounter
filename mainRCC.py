@@ -3,13 +3,12 @@ import time
 
 # starting the GPIO and setting warnings to false
 GPIO.setmode(GPIO.BCM)
-#GPIO.setwarnings(False)
 
 # Sensors being set to GPIO
-TRIG = 20    # sensor 1 output - connected to trig pin - don't change this
-ECHO = 21    # sensor 1 input  - connected to echo pin - don't change this
-DELTA = 23  # sensor 2 out- put - connected to trig pin - don't change this
-BRAVO = 24  # sensor 2 input  - connected to echo pin - don't change this
+TRIG = 20               # sensor 1 output - connected to trig pin - don't change this
+ECHO = 21               # sensor 1 input  - connected to echo pin - don't change this
+DELTA = 23              # sensor 2 out- put - connected to trig pin - don't change this
+BRAVO = 24              # sensor 2 input  - connected to echo pin - don't change this
 
 # initializing/ set+ting up the sensors 
 GPIO.setup(TRIG, GPIO.OUT)      
@@ -21,12 +20,12 @@ print "Sensor 2 Online"
 print ""
 
 # defining variables
-sensorSleep = .1        # change this for faster or slower output.
+sensorSleep = .05       # change this for faster or slower output.
 sensorSleep2 = 0.001    # necessary buffer time - don't change this 
 arrayOne = []           # array for sensor 1 - don't change this
 arrayTwo = []           # array for sensor 2- don't change this
 counter = 0             # counter for loop 1
-arraySize = 500         # the number of items to be averaged - the larger the more accurate.
+arraySize = 100         # the number of items to be averaged - the larger the more accurate.
 detArrayOne = []        # array for detecting movement - sensor one 
 detArrayTwo = []        # array for detecting movement - sensor two
 valueOne = 1            # value for easy sizing of array - don't change
@@ -41,12 +40,8 @@ roomCapacity = 0        # the actual room capacity
 
 print "Starting the loop to calculate average"
 print " "
-while True:  
+while counter <= arraySize:  
 
-    # breaks the while loop after it reaches the integer in variable arraySize
-    if counter == arraySize:
-        break
-    
     # ==========================
     #          Sensor 1
     # ==========================
@@ -62,10 +57,11 @@ while True:
         pulseStartOne = time.time()
     while GPIO.input(ECHO) == 1:
         pulseEndOne = time.time()
+        
     # defining distance
     pulseDurationOne = pulseEndOne - pulseStartOne
     distanceOne = pulseDurationOne * 17150
-    # calculating distance for sensor
+    
     if True:
         arrayOne.append(distanceOne) # adding each iteration to arrayOne
         
@@ -90,7 +86,6 @@ while True:
     pulseDurationTwo = pulseEndTwo - pulseStartTwo
     distanceTwo = pulseDurationTwo * 17150
 
-    # calculating distance for sensor 2
     if True:
         arrayTwo.append(distanceTwo) # adding each iteration to arrayTwo
         counter += 1
