@@ -25,7 +25,7 @@ sensorSleep2 = 0.001    # necessary buffer time - don't change this
 arrayOne = []           # array for sensor 1 - don't change this
 arrayTwo = []           # array for sensor 2- don't change this
 counter = 0             # counter for loop 1
-arraySize = 100         # the number of items to be averaged - the larger the more accurate.
+arraySize = 25          # the number of items to be averaged - the larger the more accurate.
 detArrayOne = []        # array for detecting movement - sensor one 
 detArrayTwo = []        # array for detecting movement - sensor two
 valueOne = 1            # value for easy sizing of array - don't change
@@ -113,7 +113,7 @@ print ''
 #                       main loop
 # ======================================================
 
-time.sleep(2) # for readability purposes
+time.sleep(1) # for readability purposes
 
 try:
     
@@ -142,6 +142,19 @@ try:
             sensorTwoDet = 1                        # sensor two set to 1 as long as something is under it
             print 'detected - sensor 2'
             print ''
+
+        # ===============================
+        #   detecting someone coming in 
+        # ===============================
+        if sensorOneDet = 1:
+            print ''
+
+        
+        # ===============================
+        #   detecting someone coming in 
+        # ===============================
+
+
     
         # ==============================
         #           Sensor 1
