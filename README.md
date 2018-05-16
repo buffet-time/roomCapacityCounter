@@ -1,6 +1,7 @@
 # ROOM CAPACITY COUNTER
 
 Computer Science Club Project - by Daniel Turcich ( buffet-time on Github )
+
 (never finished -- might finish up the functionality in the future)
 
 The project is being written in Python due to ease of use with the Raspberry Pi 2 and the hardware being used.
